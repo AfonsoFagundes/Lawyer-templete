@@ -11,14 +11,14 @@ import type { Variants } from "framer-motion"
 const CONFIG = {
   nome:        "Silva & Associados",
   area:        "Advocacia",
-  cidade:      "Curitiba, PR",
+  cidade:      "Florianópolis, SC",
   fundacao:    "2008",
   anos:        "16",
   whatsapp:    "5541999990000",
   email:       "contato@silvaadv.com.br",
   telefone:    "(41) 9 9999-0000",
-  endereco:    "Rua XV de Novembro, 1000 — Centro, Curitiba/PR",
-  oab:         "OAB/PR n.º 00000",
+  endereco:    "Av Calil Boulus, 1000 — Ingleses, Florianópolis/SC",
+  oab:         "OAB/SC n.º 00000",
   stats: {
     casos:     "1.200+",
     exito:     "94%",
