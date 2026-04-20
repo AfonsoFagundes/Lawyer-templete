@@ -1,9 +1,10 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { MessageCircle, ArrowUpRight, Scale, Phone, Mail, MapPin, Menu, X } from "lucide-react"
 import type { Variants } from "framer-motion"
+import Image from "next/image"
 
 // ============================================================
 // 🔧 CONFIGURAÇÃO DO CLIENTE — edite apenas este bloco
@@ -14,7 +15,7 @@ const CONFIG = {
   cidade:      "Florianópolis, SC",
   fundacao:    "2008",
   anos:        "16",
-  whatsapp:    "5541999990000",
+  whatsapp:    "5511947901270",
   email:       "contato@silvaadv.com.br",
   telefone:    "(41) 9 9999-0000",
   endereco:    "Av Calil Boulus, 1000 — Ingleses, Florianópolis/SC",
@@ -28,12 +29,12 @@ const CONFIG = {
   sobreDesc:   "Fundado em 2008, nosso escritório atua com equipe multidisciplinar dedicada às melhores soluções jurídicas. Combinamos experiência técnica com relacionamento próximo ao cliente.",
   quote:       "Cada causa é tratada como única. Não existe advocacia de massa aqui — existe comprometimento real com o resultado do cliente.",
   quoteSig:    "Dr. Carlos Silva — Sócio fundador",
-  award:       "Escritório reconhecido pela OAB/PR como referência em atendimento ao cliente.",
+  award:       "Escritório reconhecido pela OAB/SC como referência em atendimento ao cliente.",
   creds: [
     { tag: "Especialização", txt: "Pós-graduação em Direito Processual Civil — USP" },
-    { tag: "Associações",    txt: "Membro ativo da OAB/PR e IASP" },
+    { tag: "Associações",    txt: "Membro ativo da OAB/SC e IASP" },
     { tag: "Atuação",        txt: "Tribunais Estaduais, STJ e STF em causas de alta complexidade" },
-    { tag: "Atendimento",    txt: "Presencial em Curitiba e online para todo o Brasil" },
+    { tag: "Atendimento",    txt: "Presencial em Florianópolis e online para todo o Brasil" },
   ],
   areas: [
     { titulo: "Direito Civil",          desc: "Contratos, responsabilidade civil, família e sucessões" },
@@ -44,9 +45,9 @@ const CONFIG = {
     { titulo: "Direito Imobiliário",    desc: "Compra e venda, locações, usucapião e regularização" },
   ],
   depoimentos: [
-    { texto: "Profissionalismo impecável. Resolveram meu processo trabalhista em tempo recorde.", autor: "Marcos Oliveira",  cargo: "Engenheiro — Curitiba, PR" },
-    { texto: "Consegui minha aposentadoria depois de anos tentando sozinha. Recomendo de olhos fechados.", autor: "Ana Paula Santos", cargo: "Professora — Londrina, PR" },
-    { texto: "Atendimento humanizado e resultado excelente. Do início ao fim com seriedade.", autor: "Roberto Lima",     cargo: "Empresário — Maringá, PR" },
+    { texto: "Profissionalismo impecável. Resolveram meu processo trabalhista em tempo recorde.", autor: "Marcos Oliveira",  cargo: "Engenheiro — Florianópolis, SC" },
+    { texto: "Consegui minha aposentadoria depois de anos tentando sozinha. Recomendo de olhos fechados.", autor: "Ana Paula Santos", cargo: "Professora — Joinville, SC" },
+    { texto: "Atendimento humanizado e resultado excelente. Do início ao fim com seriedade.", autor: "Roberto Lima",     cargo: "Empresário — Blumenau, SC" },
   ],
 }
 // ============================================================
@@ -55,8 +56,10 @@ const ease = [0.16, 1, 0.3, 1] as [number, number, number, number]
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 28, filter: "blur(5px)" },
-  show:   { opacity: 1, y: 0,  filter: "blur(0px)",
-    transition: { duration: 0.7, ease } },
+  show: {
+    opacity: 1, y: 0, filter: "blur(0px)",
+    transition: { duration: 0.7, ease }
+  },
 }
 
 const navLinks = [
@@ -66,7 +69,6 @@ const navLinks = [
   { label: "Contato",      href: "#contato"  },
 ]
 
-// ── Stars ──
 function Stars() {
   return (
     <div className="flex gap-1 mb-4">
@@ -79,7 +81,6 @@ function Stars() {
   )
 }
 
-// ── SectionLabel ──
 function SectionLabel({ children, center }: { children: React.ReactNode; center?: boolean }) {
   return (
     <div className={`text-[9px] font-medium tracking-[.28em] uppercase text-[#9a7d4a] mb-3 ${center ? "text-center" : ""}`}>
@@ -88,16 +89,14 @@ function SectionLabel({ children, center }: { children: React.ReactNode; center?
   )
 }
 
-// ── Smooth scroll helper ──
 function scrollTo(href: string) {
   const id = href.replace("#", "")
   const el = document.getElementById(id)
   if (el) el.scrollIntoView({ behavior: "smooth" })
 }
 
-// ── NAVBAR ──
 function Navbar() {
-  const [open, setOpen]       = useState(false)
+  const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const WA = `https://wa.me/${CONFIG.whatsapp}?text=Olá, gostaria de agendar uma consulta gratuita.`
 
@@ -107,7 +106,6 @@ function Navbar() {
     return () => window.removeEventListener("scroll", handler)
   }, [])
 
-  // Bloqueia scroll do body quando menu mobile está aberto
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : ""
     return () => { document.body.style.overflow = "" }
@@ -119,7 +117,6 @@ function Navbar() {
         ${scrolled ? "bg-[#fafaf8]/95 backdrop-blur-xl shadow-sm" : "bg-[#fafaf8]"}`}>
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
 
-          {/* Logo */}
           <div className="flex items-center gap-3">
             <Scale className="w-5 h-5 text-[#9a7d4a]" />
             <span className="font-serif text-lg font-normal">{CONFIG.nome}</span>
@@ -127,7 +124,6 @@ function Navbar() {
             <span className="hidden sm:block text-[10px] font-medium tracking-[.2em] uppercase text-[#6b6860]">{CONFIG.area}</span>
           </div>
 
-          {/* Links desktop */}
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((l) => (
               <button key={l.href}
@@ -138,13 +134,11 @@ function Navbar() {
             ))}
           </div>
 
-          {/* CTA desktop + burger mobile */}
           <div className="flex items-center gap-3">
             <a href={WA} target="_blank" rel="noopener noreferrer"
-              className="text-[11px] font-medium tracking-[.15em] uppercase bg-[#111110] text-white px-5 py-2.5 hover:bg-[#2a2a2a] transition-colors">
+              className="hidden sm:inline-block text-[11px] font-medium tracking-[.15em] uppercase bg-[#111110] text-white px-5 py-2.5 hover:bg-[#2a2a2a] transition-colors">
               Consulta Gratuita
             </a>
-            {/* Burger — só no mobile */}
             <button
               onClick={() => setOpen(!open)}
               className="md:hidden p-2 text-[#111110] hover:text-[#9a7d4a] transition-colors"
@@ -155,7 +149,6 @@ function Navbar() {
         </div>
       </nav>
 
-      {/* Menu mobile overlay */}
       <AnimatePresence>
         {open && (
           <motion.div
@@ -188,7 +181,6 @@ function Navbar() {
               Falar pelo WhatsApp
             </motion.a>
 
-            {/* Contatos rápidos */}
             <div className="mt-auto flex flex-col gap-3 text-[12px] text-[#6b6860]">
               <div className="flex items-center gap-2"><Phone className="w-3.5 h-3.5 text-[#9a7d4a]" />{CONFIG.telefone}</div>
               <div className="flex items-center gap-2"><Mail  className="w-3.5 h-3.5 text-[#9a7d4a]" />{CONFIG.email}</div>
@@ -200,7 +192,6 @@ function Navbar() {
   )
 }
 
-// ── PAGE ──
 export default function Page() {
   const WA = `https://wa.me/${CONFIG.whatsapp}?text=Olá, gostaria de agendar uma consulta gratuita.`
 
@@ -214,7 +205,7 @@ export default function Page() {
         {/* Esquerda — escura */}
         <div className="bg-[#111110] flex flex-col justify-end px-8 md:px-12 py-16 relative overflow-hidden min-h-[65vh] lg:min-h-auto">
           <div className="absolute -top-20 -right-20 w-72 h-72 border border-[#9a7d4a]/10 rounded-full pointer-events-none" />
-          <div className="absolute -top-10 -right-10 w-48 h-48 border border-[#9a7d4a]/06 rounded-full pointer-events-none" />
+          <div className="absolute -top-10 -right-10 w-48 h-48 border border-[#9a7d4a]/[0.06] rounded-full pointer-events-none" />
 
           <motion.div variants={fadeUp} initial="hidden" animate="show"
             className="text-[10px] font-medium tracking-[.28em] uppercase text-[#9a7d4a] mb-7">
@@ -262,30 +253,30 @@ export default function Page() {
           </motion.div>
         </div>
 
-        {/* Direita — clara */}
+        {/* ── Direita — clara ── */}
         <div className="bg-[#f3f0eb] flex flex-col justify-center px-8 md:px-12 py-16 relative">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.7 }}
-            className="absolute top-10 right-10 text-right">
-            <div className="font-serif text-6xl font-normal text-[#9a7d4a]/15 leading-none">{CONFIG.anos}</div>
-            <div className="text-[9px] tracking-[.22em] uppercase text-[#6b6860]">anos de experiência</div>
-          </motion.div>
 
-          {/* IMAGE PLACEHOLDER */}
-          <div className="w-full h-52 bg-[#e2ddd4] rounded mb-6 flex items-center justify-center border border-[#d4cfc8]">
-            <div className="text-center text-[#9a7d4a]/40">
-              <Scale className="w-10 h-10 mx-auto mb-2" />
-              <div className="text-[11px] tracking-[.15em] uppercase">Foto do escritório</div>
-              <div className="text-[10px] text-[#6b6860] mt-1">/public/foto-escritorio.jpg</div>
-            </div>
+          {/* Imagem com badge sobreposto */}
+          <div className="relative mb-6">
+            <Image
+              src="/assets/rf_design_de_interiores_01.webp"
+              alt="Escritório"
+              width={500}
+              height={208}
+              className="w-full h-60 object-cover rounded"
+            />
+            {/* Badge "anos de experiência" sobre a imagem */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1, delay: 0.7 }}
+              className="absolute bottom-3 right-3 text-right bg-black/40 backdrop-blur-sm px-3 py-2 rounded">
+              <div className="font-serif text-4xl font-normal text-white/80 leading-none">{CONFIG.anos}</div>
+              <div className="text-[9px] tracking-[.22em] uppercase text-white/60">anos de experiência</div>
+            </motion.div>
           </div>
-          {/* Para adicionar foto, substitua o bloco acima por:
-            <Image src="/foto-escritorio.jpg" alt="Escritório" width={500} height={208}
-              className="w-full h-52 object-cover rounded mb-6" />
-          */}
 
+          {/* Stats */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -303,6 +294,7 @@ export default function Page() {
             ))}
           </motion.div>
 
+          {/* Award */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -311,6 +303,7 @@ export default function Page() {
             <div className="text-[9px] tracking-[.22em] uppercase text-[#9a7d4a] mb-1">Reconhecimento</div>
             <div className="font-serif text-[14px] leading-snug text-[#111110]">{CONFIG.award}</div>
           </motion.div>
+
         </div>
       </section>
 
@@ -331,16 +324,12 @@ export default function Page() {
           </div>
 
           <div className="flex flex-col gap-3">
-            {/* IMAGE PLACEHOLDER — foto do sócio */}
-            <div className="w-full h-44 bg-white/5 border border-white/[0.08] flex items-center justify-center mb-1">
-              <div className="text-center text-[#9a7d4a]/30">
-                <div className="w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-2 text-xl font-serif text-white/20">Dr</div>
-                <div className="text-[10px] tracking-[.15em] uppercase text-white/20">Foto do sócio</div>
-                <div className="text-[10px] text-white/15 mt-0.5">/public/foto-socio.jpg</div>
-              </div>
-            </div>
-            {/* Para adicionar foto, substitua por:
-              <Image src="/foto-socio.jpg" alt="Dr. Nome" width={500} height={176}
+            {/* Placeholder foto sócio — substitua por <Image> quando tiver a foto */}
+           
+            <Image src="/assets/socios.jpg" alt="Dr. Nome" width={500} height={500}
+                className="w-full h-70 object-cover object-top mb-1" />
+            {/* Para adicionar foto:
+              <Image src="/assets/foto-socio.jpg" alt="Dr. Nome" width={500} height={176}
                 className="w-full h-44 object-cover object-top mb-1" />
             */}
 
@@ -517,7 +506,7 @@ export default function Page() {
           <span className="text-[11px] text-white/20">
             © {new Date().getFullYear()} {CONFIG.nome} — Todos os direitos reservados
           </span>
-          <span className="text-[11px] text-white/15">{CONFIG.oab}</span>
+          <span className="text-[11px] text-white/[0.15]">{CONFIG.oab}</span>
         </div>
       </footer>
 
